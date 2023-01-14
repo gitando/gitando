@@ -36,7 +36,7 @@
             <div class="card-body">
                 <p>{{ __('gitando.update_password') }}</p>
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="{{ __('gitando.change_password_placeholder') }}" id="newpass" autocomplete="off" />
+                    <input class="form-control" type="password" placeholder="{{ __('gitando.change_password_placeholder') }}" id="newpass" autocomplete="off" />
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="button" id="changepass"><i class="fas fa-edit"></i></button>
                     </div>
