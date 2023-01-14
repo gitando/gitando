@@ -1,0 +1,5 @@
+*
+!gitando/
+!gitando/*
+!public/
+!.gitignore
