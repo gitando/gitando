@@ -40,7 +40,7 @@ class ActiveSetupCount extends Command
         sleep(rand(0, 9));
 
         // Useful to daily count how many Gitando Control Panel installations are active
-        // around the world and show the total value into gitando.sh official website
+        // around the world and show the total value into gitando.com official website
         try {
             file_get_contents(config('gitando.activesetupcount'));
         } catch (\Throwable $th) {
