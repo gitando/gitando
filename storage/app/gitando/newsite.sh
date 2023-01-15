@@ -73,7 +73,7 @@ CUSTOM=/etc/nginx/gitando/$USER_NAME.conf
 sudo wget $REMOTE/conf/nginx -O $CUSTOM
 sudo dos2unix $CUSTOM
 sudo ln -s $NGINX /etc/nginx/sites-enabled/$USER_NAME.conf
-sudo chown -R www-data:$USER_NAME /home/$USER_NAME/web
+sudo chown -R www-data: /home/$USER_NAME/web
 sudo service php$PHP-fpm restart
 sudo systemctl restart nginx.service
 
@@ -93,4 +93,5 @@ sudo cp /etc/gitando/github /home/$USER_NAME/git/deploy
 
 sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/.cache
 sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/git
-sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/web
+#sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/web
+sudo chown -R www-data:wwww-data /home/$USER_NAME/web
