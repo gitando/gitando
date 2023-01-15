@@ -39,11 +39,12 @@ bgpurple=$(tput setab 5)
 clear
 echo "${green}${bold}"
 echo ""
-echo " ██████ ██ ██████  ██" 
-echo "██      ██ ██   ██ ██" 
-echo "██      ██ ██████  ██" 
-echo "██      ██ ██      ██" 
-echo " ██████ ██ ██      ██" 
+echo "  ________.__  __                     .___       "
+echo " /  _____/|__|/  |______    ____    __| _/____   "
+echo "/   \  ___|  \   __\__  \  /    \  / __ |/  _ \  "
+echo "\    \_\  \  ||  |  / __ \|   |  \/ /_/ (  <_> ) "
+echo " \______  /__||__| (____  /___|  /\____ |\____/  "
+echo "        \/              \/     \/      \/        "
 echo ""
 echo "Installation has been started... Hold on!"
 echo "${reset}"
@@ -127,11 +128,12 @@ WELCOME=/etc/motd
 sudo touch $WELCOME
 sudo cat > "$WELCOME" <<EOF
 
- ██████ ██ ██████  ██ 
-██      ██ ██   ██ ██ 
-██      ██ ██████  ██ 
-██      ██ ██      ██
- ██████ ██ ██      ██
+  ________.__  __                     .___       
+ /  _____/|__|/  |______    ____    __| _/____   
+/   \  ___|  \   __\__  \  /    \  / __ |/  _ \  
+\    \_\  \  ||  |  / __ \|   |  \/ /_/ (  <_> ) 
+ \______  /__||__| (____  /___|  /\____ |\____/  
+        \/              \/     \/      \/        
 
 With great power comes great responsibility...
 
@@ -348,10 +350,6 @@ max_execution_time = 180
 max_input_time = 180
 EOF
 sudo service php8.1-fpm restart
-
-
-# PHP EXTRA
-sudo apt-get -y install php-dev php-pear
 
 
 # PHP EXTRA

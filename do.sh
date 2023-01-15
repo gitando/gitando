@@ -534,7 +534,7 @@ echo "${reset}"
 sleep 1s
 
 curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
-curl -sL https://deb.nodesource.com/setup16.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 NODE=/etc/apt/sources.list.d/nodesource.list
 sudo unlink NODE
 sudo touch $NODE
@@ -613,7 +613,6 @@ sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:gitando /var/www/html
 
 
-
 # LAST STEPS
 clear
 echo "${bggreen}${black}${bold}"
@@ -641,11 +640,13 @@ cat > "$TASK" <<EOF
 EOF
 crontab $TASK
 sudo systemctl restart nginx.service
+
 sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
 sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
 sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
 sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
 sudo service sshd restart
+
 TASK=/etc/supervisor/conf.d/gitando.conf
 touch $TASK
 cat > "$TASK" <<EOF
