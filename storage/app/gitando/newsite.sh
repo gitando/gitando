@@ -73,7 +73,7 @@ CUSTOM=/etc/nginx/gitando/$USER_NAME.conf
 sudo wget $REMOTE/conf/nginx -O $CUSTOM
 sudo dos2unix $CUSTOM
 sudo ln -s $NGINX /etc/nginx/sites-enabled/$USER_NAME.conf
-sudo chown -R www-data: /home/$USER_NAME/web
+sudo chown -R www-data:$USER_NAME /home/$USER_NAME/web
 sudo service php$PHP-fpm restart
 sudo systemctl restart nginx.service
 

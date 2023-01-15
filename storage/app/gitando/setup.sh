@@ -354,6 +354,7 @@ sudo service php8.1-fpm restart
 
 # PHP EXTRA
 sudo apt-get -y install php-dev php-pear
+sudo apt-get -y install php-dev php-pear
 
 
 # PHP CLI
