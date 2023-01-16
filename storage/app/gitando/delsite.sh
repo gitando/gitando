@@ -36,7 +36,6 @@ DROP DATABASE $USER_NAME;
 DROP USER '$USER_NAME'@'localhost';
 EOF
 
-
 sudo unlink /etc/nginx/sites-enabled/$USER_NAME.conf
 sudo unlink /etc/nginx/sites-available/$USER_NAME.conf
 sudo systemctl restart nginx.service

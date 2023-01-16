@@ -47,7 +47,13 @@ done
 
 sudo useradd -m -s $USER_SHELL -d /home/$USER_NAME -G www-data $USER_NAME
 echo "$USER_NAME:$PASSWORD"|chpasswd
+
+# Seciry measure - just in case (default behavour)
 sudo chmod o-r /home/$USER_NAME
+
+# Fixes "permission denied"
+# https://stackoverflow.com/a/43686446/512277
+sudo chmod +x /home/$USER_NAME
 
 mkdir /home/$USER_NAME/web
 mkdir /home/$USER_NAME/log
@@ -60,7 +66,7 @@ else
 fi
 sudo touch $WELCOME
 sudo cat > "$WELCOME" <<EOF
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="robots" content="noindex, nofollow"> <meta name="googlebot" content="noindex"> <title>Coming Soon</title> <style>html{font-family: Arial, sans-serif; color: #000; font-size: 16px; font-weight: 400;}main{margin: 3rem 0 0 3rem;}h1, p{margin-top: 0; margin-bottom: 1.8rem;}h1{font-weight: 700; font-size: 4.5rem;}p{color: #7d7d7d; font-size: 1.75rem;}@media screen and (max-width: 768px){html{font-size: 12px;}main{margin: 3rem 0 0 3rem;}}</style></head><body><main><h1>Coming Soon</h1><p><script>document.write(window.location.hostname);</script></p></main></body></html>
+<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"> <title>Coming Soon</title> <style>html{font-family: Arial, sans-serif; color: #000;}main{margin: 6rem 0 0; text-align: center;}h1{font-size: clamp(1em, 9vw, 3em); margin-bottom: 0;}h2{font-size: clamp(1em, 12vw, 6em);}p{margin-top: 8px; color: #7d7d7d; font-size: clamp(0.7em, 5vw, 1.2em);;}a{color: #7d7d7d;}</style> </head> <body> <main> <h1> <script>document.write(window.location.hostname); </script> </h1> <p> Managed with <a href="https://gitando.com/">Gitando</a> </p><h2>COMING SOON</h2> </main> </body></html>
 EOF
 
 NGINX=/etc/nginx/sites-available/$USER_NAME.conf
@@ -73,6 +79,8 @@ CUSTOM=/etc/nginx/gitando/$USER_NAME.conf
 sudo wget $REMOTE/conf/nginx -O $CUSTOM
 sudo dos2unix $CUSTOM
 sudo ln -s $NGINX /etc/nginx/sites-enabled/$USER_NAME.conf
+
+# dublicaed in last line
 sudo chown -R www-data: /home/$USER_NAME/web
 sudo service php$PHP-fpm restart
 sudo systemctl restart nginx.service
