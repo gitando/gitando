@@ -39,8 +39,26 @@ class GitandoUpdate extends Command
      */
     public function handle()
     {
+
+        // 2023-01-17 patch
+        $servers = Server::where('build', '<', '202311171')->get();
+
+        foreach ($servers as $server) {
+            $ssh = new SSH2($server->ip, 22);
+            $ssh->login('gitando', $server->password);
+            $ssh->setTimeout(360);
+            $ssh->exec('echo '.$server->password.' | sudo -S sudo wget '.config('app.url').'/sh/client-patch/202311171');
+            $ssh->exec('echo '.$server->password.' | sudo -S sudo dos2unix 202311171');
+            $ssh->exec('echo '.$server->password.' | sudo -S sudo bash 202311171');
+            $ssh->exec('echo '.$server->password.' | sudo -S sudo unlink 202311171');
+            $ssh->exec('exit');
+
+            $server->build = '202311171';
+            $server->save();
+        }
+
         // 2021-12-18 patch
-        $servers = Server::where('build', '<', '202112181')->get();
+        /* $servers = Server::where('build', '<', '202112181')->get();
 
         foreach ($servers as $server) {
             $ssh = new SSH2($server->ip, 22);
@@ -54,7 +72,7 @@ class GitandoUpdate extends Command
 
             $server->build = '202112181';
             $server->save();
-        }
+        } */
 
         $server = Server::where('default', 1)->first();
 

@@ -11,6 +11,7 @@ Route::get('/delsite', [ShellController::class, 'delsite']);
 Route::get('/sitepass', [ShellController::class, 'sitepass']);
 
 // Client Patch
+Route::get('/client-patch/202301171', [ShellController::class, 'patch202301171']);
 Route::get('/client-patch/202112091', [ShellController::class, 'patch202112091']);
 Route::get('/client-patch/202112101', [ShellController::class, 'patch202112101']);
 Route::get('/client-patch/202112181', [ShellController::class, 'patch202112181']);

@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Gitando API Documentation",
-        "description": "API Documentation for Gitando Control Panel",
+        "description": "API Documentation for Gitando Panel",
         "version": "1.0"
     },
     "paths": {

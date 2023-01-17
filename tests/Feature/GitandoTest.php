@@ -13,7 +13,7 @@ class GitandoTest extends TestCase
     public function testShowLoginPage()
     {
         $response = $this->get('/login');
-        $response->assertSee('Gitando Control Panel');
+        $response->assertSee('Gitando Panel');
         $response->assertStatus(200);
     }
 

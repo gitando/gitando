@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @OA\Info(
  *      version="1.0",
  *      title="Gitando API Documentation",
- *      description="API Documentation for Gitando Control Panel"
+ *      description="API Documentation for Gitando Panel"
  * )
  *
 */

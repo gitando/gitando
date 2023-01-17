@@ -99,6 +99,18 @@ class ShellController extends Controller
 
 
     /**
+     * Client Patch - 202301171
+     *
+    */
+    public function patch202301171()
+    {
+        $script = Storage::get('gitando/patch202301171.sh');
+
+        return response($script)
+                ->withHeaders(['Content-Type' =>'application/x-sh']);
+    }
+
+    /**
      * Client Patch - 202112091
      *
     */

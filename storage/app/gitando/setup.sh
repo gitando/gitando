@@ -3,7 +3,7 @@
 
 
 #################################################### CONFIGURATION ###
-BUILD=202112181
+BUILD=202301171
 PASS=???
 DBPASS=???
 SERVERID=???
@@ -382,6 +382,16 @@ mv composer.phar /usr/local/bin/composer
 composer config --global repo.packagist composer https://packagist.org --no-interaction
 
 
+# WP-CLI
+clear
+echo "${bggreen}${black}${bold}"
+echo "WP-CLI setup..."
+echo "${reset}"
+sleep 1s
+
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
 
 
 # GIT
@@ -563,7 +573,7 @@ cat > "$TASK" <<EOF
 20 5 * * 7 apt-get clean && apt-get autoclean
 50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 * * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
-5 2 * * * cd /var/www/html/utility/gitando-update && sh run.sh >> /dev/null 2>&1
+5 2 * * * sh /var/www/html/utility/gitando-update/run.sh >> /dev/null 2>&1
 EOF
 crontab $TASK
 sudo systemctl restart nginx.service
