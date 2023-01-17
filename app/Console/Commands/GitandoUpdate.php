@@ -41,6 +41,8 @@ class GitandoUpdate extends Command
     {
         $server = Server::where('default', 1)->first();
 
+        print_r( $server );
+
         $ssh = new SSH2($server->ip, 22);
         $ssh->login('gitando', $server->password);
         $ssh->setTimeout(360);
