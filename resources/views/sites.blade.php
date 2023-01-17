@@ -74,6 +74,14 @@
                             <input class="form-control" type="text" id="newsitebasepath" placeholder="e.g. public" autocomplete="off" />
                         </div>
                         <div class="space"></div>
+                        <label for="newsitebasepath">{{ __('gitando.install_wp') }}</label>
+                        <div class="input-group">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Install a fresh copy of WordPress
+                            </label>
+                        </div>
+                        <div class="space"></div>
                         <div class="text-center">
                             <button class="btn btn-primary" type="button" id="submit">{{ __('gitando.confirm') }} <i class="fas fa-circle-notch fa-spin d-none" id="loading"></i></button>
                         </div>
