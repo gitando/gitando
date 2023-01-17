@@ -74,12 +74,11 @@
                             <input class="form-control" type="text" id="newsitebasepath" placeholder="e.g. public" autocomplete="off" />
                         </div>
                         <div class="space"></div>
-                        <label for="newsitebasepath">{{ __('gitando.install_wp') }}</label>
                         <div class="input-group">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Install a fresh copy of WordPress
-                            </label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="installwp">
+                                <label class="form-check-label" for="installwp">{{ __('gitando.install_wp') }}</label>
+                            </div>
                         </div>
                         <div class="space"></div>
                         <div class="text-center">
