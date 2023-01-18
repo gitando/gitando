@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-BASE_PATH=
-USER_SHELL=/bin/bash
-
 while [ -n "$1" ] ; do
     case $1 in
     -u | --user )
@@ -42,16 +39,16 @@ while [ -n "$1" ] ; do
 done
 
 # Enter into the public directory
-cd /home/$USERNAME/web/$BASEPATH
+cd /home/$USERNAME/web/
 
 # Install WP
-sudo wp --allow-root core download
-sudo wp --allow-root core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
-sudo wp --allow-root core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
+wp --allow-root core download
+wp --allow-root core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
+wp --allow-root core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
 
 # Update Permissions
-sudo chown -R $USER:$USER $PATH
+sudo chown -R $USER:$USER /home/$USERNAME/web/
 sudo chmod 600 wp-config.php
 
 # Todo: is clearing the history needed (to clear credentials?
-history -c
+# history -c
