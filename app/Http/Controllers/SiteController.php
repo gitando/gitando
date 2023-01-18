@@ -835,7 +835,7 @@ class SiteController extends Controller
             'domain'            => $site->domain.'/wp-admin/',
             'username'          => $wpuser,
             'password'          => $wppass,
-            'pdf'               => //URL::to('/pdf/'.$site_id.'/'. $pdftoken)
+            'pdf'               => '' //URL::to('/pdf/'.$site_id.'/'. $pdftoken)
         ]);
     }
 
