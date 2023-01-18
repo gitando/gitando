@@ -833,8 +833,8 @@ class SiteController extends Controller
         // return response()->json([]);
         return response()->json([
             'domain'            => $site->domain.'/wp-admin/',
-            'username'          => $wpuser,
-            'password'          => $wppass,
+            'username'          => $wp['user'],
+            'password'          => $wp['pass'],
             'pdf'               => '' //URL::to('/pdf/'.$site_id.'/'. $pdftoken)
         ]);
     }
