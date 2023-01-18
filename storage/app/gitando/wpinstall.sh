@@ -45,13 +45,13 @@ done
 cd $PATH
 
 # Install WP
-wp core download
-wp core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
-wp core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
+wp --allow-root core download
+wp --allow-root core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
+wp --allow-root core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
 
 # Update Permissions
 sudo chown -R $USER:$USER $PATH
-chmod 600 wp-config.php
+sudo chmod 600 wp-config.php
 
 # Todo: is clearing the history needed (to clear credentials?
 history -c
