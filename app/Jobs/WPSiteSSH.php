@@ -41,11 +41,11 @@ class WPSiteSSH implements ShouldQueue
         $ssh->login('gitando', $this->site->server->password);
         $ssh->setTimeout(360);
 
-        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo unlink wpinstall');
-        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo wget '.config('app.url').'/sh/wpinstall');
-        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo dos2unix wpinstall');
-        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo bash wpinstall -u '.$this->site->username.' -p '.$this->site->database.' -l '.$this->site->domain.' -wpu '.$this->wp['user'].' -wpp '.$this->wp['pass'].' -wpm '.$this->wp['mail'].' -b '.$this->site->basepath);
-        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo unlink wpinstall');
+        $ssh->exec('echo '.$this->site->server->password.' | sudo -S sudo unlink wpinstall');
+        $ssh->exec('echo '.$this->site->server->password.' | sudo -S sudo wget '.config('app.url').'/sh/wpinstall');
+        $ssh->exec('echo '.$this->site->server->password.' | sudo -S sudo dos2unix wpinstall');
+        $ssh->exec('echo '.$this->site->server->password.' | sudo -S sudo bash wpinstall -u '.$this->site->username.' -p '.$this->site->database.' -l '.$this->site->domain.' -wpu '.$this->wp['user'].' -wpp '.$this->wp['pass'].' -wpm '.$this->wp['mail'].' -b '.$this->site->basepath);
+        $ssh->exec('echo '.$this->site->server->password.' | sudo -S sudo unlink wpinstall');
 
         $ssh->exec('exit');
     }
