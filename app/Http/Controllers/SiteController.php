@@ -136,161 +136,10 @@ class SiteController extends Controller
     }
 
 
-
-
     /**
      * Add a new site
      *
-     * @OA\Post(
-     *      path="/api/sites",
-     *      summary="Add a new site",
-     *      tags={"Sites"},
-     *      description="Add a new site in panel.",
-     *      @OA\Parameter(
-     *          name="Authorization",
-     *          description="Use Apikey prefix (e.g. Authorization: Apikey XYZ)",
-     *          required=true,
-     *          in="header",
-     *          @OA\Schema(type="string")
-     *     ),
-     *     @OA\RequestBody(
-     *        required = true,
-     *        description = "Site creation payload",
-     *        @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(
-     *                  property="server_id",
-     *                  description="Site server ID",
-     *                  type="string",
-     *                  example="abc-123-def-456",
-     *             ),
-     *             @OA\Property(
-     *                  property="domain",
-     *                  description="Site main domain",
-     *                  type="string",
-     *                  example="domain.ltd",
-     *             ),
-     *             @OA\Property(
-     *                    property="php",
-     *                    description="Site PHP version",
-     *                    type="string",
-     *                    example="7.4"
-     *               ),
-     *             @OA\Property(
-     *                  property="basepath",
-     *                  description="Site basepath",
-     *                  type="string",
-     *                  example="public"
-     *             ),
-     *             required={"server_id","domain"}
-     *          )
-     *     ),
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful request",
-     *          @OA\JsonContent(
-     *                @OA\Property(
-     *                    property="site_id",
-     *                    description="Site unique ID",
-     *                    type="string",
-     *                    example="abc-123-def-456"
-     *                ),
-     *                @OA\Property(
-     *                    property="domain",
-     *                    description="Main site domain",
-     *                    type="string",
-     *                    example="domain.ltd"
-     *                ),
-     *                @OA\Property(
-     *                    property="username",
-     *                    description="Site username",
-     *                    type="string",
-     *                    example="cp123456"
-     *                ),
-     *                @OA\Property(
-     *                    property="password",
-     *                    description="Site password",
-     *                    type="string",
-     *                    example="Secret_123"
-     *                ),
-     *                @OA\Property(
-     *                    property="database",
-     *                    description="Site database",
-     *                    type="string",
-     *                    example="cp123456"
-     *                ),
-     *                @OA\Property(
-     *                    property="database_username",
-     *                    description="Site database username",
-     *                    type="string",
-     *                    example="cp123456"
-     *                ),
-     *                @OA\Property(
-     *                    property="database_password",
-     *                    description="Site database password",
-     *                    type="string",
-     *                    example="Secret_123"
-     *                ),
-     *                @OA\Property(
-     *                    property="server_id",
-     *                    description="Related server unique ID",
-     *                    type="string",
-     *                    example="abc-123-def-456"
-     *                ),
-     *                @OA\Property(
-     *                    property="server_name",
-     *                    description="Related server name",
-     *                    type="string",
-     *                    example="Staging Server",
-     *                ),
-     *                @OA\Property(
-     *                    property="server_ip",
-     *                    description="Related server IP",
-     *                    type="string",
-     *                    example="123.123.123.123",
-     *                ),
-     *                @OA\Property(
-     *                    property="php",
-     *                    description="Site PHP version",
-     *                    type="string",
-     *                    example="7.4"
-     *                ),
-     *                @OA\Property(
-     *                    property="basepath",
-     *                    description="Site basepath",
-     *                    type="string",
-     *                    example="public"
-     *                ),
-     *                @OA\Property(
-     *                    property="pdf",
-     *                    description="Site summary pdf (temp 3 minutes link)",
-     *                    type="string",
-     *                    example="https://panel.domain.ltd/pdf/123454/1233442"
-     *                ),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Server not found or not installed"
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized access error"
-     *      ),
-     *      @OA\Response(
-     *          response=409,
-     *          description="Site domain conflict"
-     *      ),
-     *      @OA\Response(
-     *          response=500,
-     *          description="SSH server connection issue"
-     *      )
-     * )
-    */
+     */
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -971,62 +820,30 @@ class SiteController extends Controller
             ], 404);
         }
 
-        WPSiteSSH::dispatch($site)->delay(Carbon::now()->addSeconds(3));
+        //$pdftoken = JWT::encode(['iat' => time(),'exp' => time() + 180], config('gitando.jwt_secret').'-Pdf');
 
-        return response()->json([]);
+        $wp = [
+            'user' => Str::random(8),
+            'pass' => Str::random(16),
+            'mail' => 'do@gitando.com'
+        ];
+        
+        WPSiteSSH::dispatch($site, $wp)->delay(Carbon::now()->addSeconds(9));
+
+        // return response()->json([]);
+        return response()->json([
+            'domain'            => $site->domain.'/wp-admin/',
+            'username'          => $wpuser,
+            'password'          => $wppass,
+            'pdf'               => //URL::to('/pdf/'.$site_id.'/'. $pdftoken)
+        ]);
     }
 
 
     /**
      * Reset site SSH password
      *
-     * @OA\Post(
-     *      path="/api/sites/{site_id}/reset/ssh",
-     *      summary="Reset site SSH password",
-     *      tags={"Sites"},
-     *      description="Require a reset for site SSH password.",
-     *      @OA\Parameter(
-     *          name="Authorization",
-     *          description="Use Apikey prefix (e.g. Authorization: Apikey XYZ)",
-     *          required=true,
-     *          in="header",
-     *          @OA\Schema(type="string")
-     *      ),
-     *      @OA\Parameter(
-     *          name="site_id",
-     *          description="The id of the site.",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(type="string")
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful password reset",
-     *          @OA\JsonContent(
-     *                @OA\Property(
-     *                    property="password",
-     *                    description="Site SSH password",
-     *                    type="string",
-     *                    example="Secret_123"
-     *                ),
-     *                @OA\Property(
-     *                    property="pdf",
-     *                    description="Site summary pdf (temp 3 minutes link)",
-     *                    type="string",
-     *                    example="https://panel.domain.ltd/pdf/123454/1233442"
-     *                ),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Site not found"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized access error"
-     *      )
-     * )
-    */
+     */
     public function resetssh(string $site_id)
     {
         $site = Site::where('site_id', $site_id)->first();

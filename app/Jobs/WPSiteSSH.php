@@ -15,15 +15,17 @@ class SslSiteSSH implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $site;
+    protected $wp;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($site)
+    public function __construct($site, $wp)
     {
         $this->site = $site;
+        $this->wp = $wp;
     }
 
     /**
@@ -40,7 +42,7 @@ class SslSiteSSH implements ShouldQueue
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo unlink wpinstall');
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo wget '.config('app.url').'/sh/wpinstall');
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo dos2unix wpinstall');
-        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo bash wpinstall -u '.$this->site->username.' -p '.$this->site->database.' -l '.$this->site->domain.' -b '.$this->site->basepath);
+        $ssh->exec('echo '.$this->server->password.' | sudo -S sudo bash wpinstall -u '.$this->site->username.' -p '.$this->site->database.' -l '.$this->site->domain.' -wpu '.$this->wp['user'].' -wpp '.$this->wp['pass'].' -wpm '.$this->wp['mail'].' -b '.$this->site->basepath);
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo unlink wpinstall');
 
         $ssh->exec('exit');

@@ -17,6 +17,18 @@ while [ -n "$1" ] ; do
         shift
         PATH=$1
         ;;
+    -wpu | --wpuser )
+        shift
+        WPUSER=$1
+        ;;
+    -wpp | --wppass )
+        shift
+        WPPASS=$1
+        ;;
+    -wpm | --wpmail )
+        shift
+        WPMAIL=$1
+        ;;
     -l | --url )
         shift
         URL=$1
@@ -29,16 +41,13 @@ while [ -n "$1" ] ; do
     shift
 done
 
-wpuser=$(openssl rand -base64 8)
-wppass=$(openssl rand -base64 12)
-
 # Enter into the public directory
 cd $PATH
 
 # Install WP
 wp core download
 wp core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
-wp core install --url=$ULR --title=$URL --admin_name=$wpuser --admin_password=$wppass --admin_email=do@gitando.com
+wp core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
 
 # Update Permissions
 sudo chown -R $USER:$USER $PATH
