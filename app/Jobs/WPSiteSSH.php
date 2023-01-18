@@ -35,8 +35,6 @@ class WPSiteSSH implements ShouldQueue
      */
     public function handle()
     {
-        print_r( $this->site->server );
-
         $ssh = new SSH2($this->site->server->ip, 22);
         $ssh->login('gitando', $this->site->server->password);
         $ssh->setTimeout(360);
