@@ -41,18 +41,11 @@ class GitandoUpdate extends Command
     {
         $server = Server::where('default', 1)->first();
 
-        print_r( $server );
-
-        $ssh = new SSH2($server->ip, 22);
-        $ssh->login('gitando', $server->password);
-        $ssh->setTimeout(360);
-        $ssh->exec('echo '.$server->password.' | sudo -S sudo bash /var/www/html/utility/gitando-update/run.sh');
-        $ssh->exec('exit');
-
         // 2023-01-17 patch
         $servers = Server::where('build', '<', '202311172')->get();
 
         foreach ($servers as $server) {
+            echo 'patching' . PHP_EOL;
             $ssh = new SSH2($server->ip, 22);
             $ssh->login('gitando', $server->password);
             $ssh->setTimeout(360);
@@ -61,10 +54,16 @@ class GitandoUpdate extends Command
             $ssh->exec('echo '.$server->password.' | sudo -S sudo bash 202311171');
             $ssh->exec('echo '.$server->password.' | sudo -S sudo unlink 202311171');
             $ssh->exec('exit');
-
+            echo 'Done paching' .PHP_EOL;
             $server->build = '202311171';
             $server->save();
         }
+
+        $ssh = new SSH2($server->ip, 22);
+        $ssh->login('gitando', $server->password);
+        $ssh->setTimeout(360);
+        $ssh->exec('echo '.$server->password.' | sudo -S sudo bash /var/www/html/utility/gitando-update/run.sh');
+        $ssh->exec('exit');
 
         // 2021-12-18 patch
         /* $servers = Server::where('build', '<', '202112181')->get();
