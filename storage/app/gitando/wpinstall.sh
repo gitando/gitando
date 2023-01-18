@@ -51,4 +51,4 @@ sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/web/
 sudo chmod 600 wp-config.php
 
 # Todo: is clearing the history needed (to clear credentials?
-# history -c
+# history -c 
