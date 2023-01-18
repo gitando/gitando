@@ -46,11 +46,11 @@ class GitandoUpdate extends Command
         $ssh = new SSH2($server->ip, 22);
         $ssh->login('gitando', $server->password);
         $ssh->setTimeout(360);
-        $ssh->exec('echo '.$server->password.' | sudo -s sh /var/www/html/utility/gitando-update/run.sh');
+        $ssh->exec('echo '.$server->password.' | sudo -S sudo bash /var/www/html/utility/gitando-update/run.sh');
         $ssh->exec('exit');
 
         // 2023-01-17 patch
-        $servers = Server::where('build', '<', '202311171')->get();
+        $servers = Server::where('build', '<', '202311172')->get();
 
         foreach ($servers as $server) {
             $ssh = new SSH2($server->ip, 22);
