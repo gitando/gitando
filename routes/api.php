@@ -40,6 +40,7 @@ Route::patch('/sites/{site_id}', [SiteController::class, 'edit']);
 Route::delete('/sites/{site_id}', [SiteController::class, 'destroy']);
 Route::get('/sites/{site_id}', [SiteController::class, 'show']);
 Route::post('/sites/{site_id}/ssl', [SiteController::class, 'ssl']);
+Route::post('/sites/{site_id}/wp', [SiteController::class, 'wp']);
 Route::post('/sites/{site_id}/reset/ssh', [SiteController::class, 'resetssh']);
 Route::post('/sites/{site_id}/reset/db', [SiteController::class, 'resetdb']);
 Route::get('/sites/{site_id}/aliases', [SiteController::class, 'aliases']);

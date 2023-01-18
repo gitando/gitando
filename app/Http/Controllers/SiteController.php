@@ -9,6 +9,7 @@ use Firebase\JWT\JWT;
 use App\Models\Server;
 use App\Jobs\NewSiteSSH;
 use App\Jobs\SslSiteSSH;
+use App\Jobs\WPSiteSSH;
 use App\Jobs\NewAliasSSH;
 use App\Jobs\SiteDbPwdSSH;
 use App\Jobs\DeleteSiteSSH;
@@ -939,39 +940,6 @@ class SiteController extends Controller
 
     /**
      * SSL request for site (and its aliases)
-     *
-     * @OA\Post(
-     *      path="/api/sites/{site_id}/ssl",
-     *      summary="SSL request for site (and its aliases)",
-     *      tags={"Sites"},
-     *      description="Require SSL certs for site and its aliases.",
-     *      @OA\Parameter(
-     *          name="Authorization",
-     *          description="Use Apikey prefix (e.g. Authorization: Apikey XYZ)",
-     *          required=true,
-     *          in="header",
-     *          @OA\Schema(type="string")
-     *      ),
-     *      @OA\Parameter(
-     *          name="site_id",
-     *          description="The id of the site to certificate (with its aliases).",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(type="string")
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful SSL request",
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Site not found"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized access error"
-     *      )
-     * )
     */
     public function ssl(string $site_id)
     {
@@ -989,6 +957,24 @@ class SiteController extends Controller
         return response()->json([]);
     }
 
+    /**
+     * WP request for site
+    */
+    public function wp(string $site_id)
+    {
+        $site = Site::where('site_id', $site_id)->first();
+
+        if (!$site) {
+            return response()->json([
+                'message' => __('gitando.site_not_found_message'),
+                'errors' => __('gitando.site_not_found')
+            ], 404);
+        }
+
+        WPSiteSSH::dispatch($site)->delay(Carbon::now()->addSeconds(3));
+
+        return response()->json([]);
+    }
 
 
     /**

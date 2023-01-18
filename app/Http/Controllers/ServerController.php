@@ -689,37 +689,7 @@ class ServerController extends Controller
 
     /**
      * Require SSL for panel
-     *
-     * @OA\Post(
-     *      path="/api/servers/panel/ssl",
-     *      summary="Require SSL for panel",
-     *      tags={"Servers"},
-     *      description="Require SSL for panel domain / subdomain.",
-     *      @OA\Parameter(
-     *          name="Authorization",
-     *          description="Use Apikey prefix (e.g. Authorization: Apikey XYZ)",
-     *          required=true,
-     *          in="header",
-     *          @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful SSL generation"
-     *     ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized access error"
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad request"
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Server not found"
-     *      ),
-     * )
-    */
+     */
     public function panelssl()
     {
         $server = Server::where('default', 1)->first();

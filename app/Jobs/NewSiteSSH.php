@@ -38,11 +38,13 @@ class NewSiteSSH implements ShouldQueue
         $ssh = new SSH2($this->server->ip, 22);
         $ssh->login('gitando', $this->server->password);
         $ssh->setTimeout(360);
+
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo unlink newsite');
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo wget '.config('app.url').'/sh/newsite');
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo dos2unix newsite');
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo bash newsite -dbr '.$this->server->database.' -u '.$this->site->username.' -p '.$this->site->password.' -dbp '.$this->site->database.' -php '.$this->site->php.' -id '.$this->site->site_id.' -r '.config('app.url').' -b '.$this->site->basepath);
         $ssh->exec('echo '.$this->server->password.' | sudo -S sudo unlink newsite');
+        
         $ssh->exec('exit');
     }
 }
