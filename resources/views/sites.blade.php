@@ -74,13 +74,6 @@
                             <input class="form-control" type="text" id="newsitebasepath" placeholder="e.g. public" autocomplete="off" />
                         </div>
                         <div class="space"></div>
-                        <div class="input-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="installwp">
-                                <label class="form-check-label" for="installwp">{{ __('gitando.install_wp') }}</label>
-                            </div>
-                        </div>
-                        <div class="space"></div>
                         <div class="text-center">
                             <button class="btn btn-primary" type="button" id="submit">{{ __('gitando.confirm') }} <i class="fas fa-circle-notch fa-spin d-none" id="loading"></i></button>
                         </div>
