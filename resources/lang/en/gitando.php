@@ -183,7 +183,7 @@ return [
     'ssl_security' => 'SSL\'s and Security',
     'ssl_security_text' => 'Require and generate free Let\'s Encrypt certificate for site domain and aliases',
     'ssl_generate' => 'Generate SSL\'s',
-    'installwp' => 'Install WordPress',
+    'wp_install' => 'Install WordPress',
     'password_resets' => 'Passwords Reset',
     'application_installer' => 'Application Installer',
     'coming_soon' => 'Coming soon...',

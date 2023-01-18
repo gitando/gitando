@@ -74,7 +74,7 @@
                 <p>{{ __('gitando.ssl_security_text') }}:</p>
                 <button class="btn btn-success btn" type="button" id="sitessl">{{ __('gitando.ssl_generate') }} <i class="fas fa-circle-notch fa-spin d-none" id="sitesslloading"></i></button>
                 <div class="space"></div>
-                <button class="btn btn-success btn" type="button" id="sitessl">{{ __('gitando.install_wp') }} <i class="fas fa-circle-notch fa-spin d-none" id="sitewploading"></i></button>
+                <button class="btn btn-success btn" type="button" id="sitessl">{{ __('gitando.wp_install') }} <i class="fas fa-circle-notch fa-spin d-none" id="sitewploading"></i></button>
                 <div class="space"></div>
                 <p>{{ __('gitando.password_resets') }}:</p>
                 <button class="btn btn-warning btn mr-3" type="button" id="sitesshreset">SSH</button>
