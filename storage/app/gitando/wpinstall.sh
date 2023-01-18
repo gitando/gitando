@@ -7,7 +7,7 @@ while [ -n "$1" ] ; do
     case $1 in
     -u | --user )
         shift
-        USER=$1
+        USERNAME=$1
         ;;
     -p | --pass )
         shift
@@ -15,7 +15,7 @@ while [ -n "$1" ] ; do
         ;;
     -b | --path )
         shift
-        PATH=$1
+        BASEPATH=$1
         ;;
     -wpu | --wpuser )
         shift
@@ -42,7 +42,7 @@ while [ -n "$1" ] ; do
 done
 
 # Enter into the public directory
-cd /home/$USER/web/$PATH
+cd /home/$USERNAME/web/$BASEPATH
 
 # Install WP
 sudo wp --allow-root core download
