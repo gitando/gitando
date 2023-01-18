@@ -45,9 +45,9 @@ done
 cd /home/$USER/web/$PATH
 
 # Install WP
-wp --allow-root core download
-wp --allow-root core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
-wp --allow-root core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
+sudo wp --allow-root core download
+sudo wp --allow-root core config --dbhost='localhost' --dbname=$USER --dbuser=$USER --dbpass=$PASS
+sudo wp --allow-root core install --url=$ULR --title=$URL --admin_name=$WPUSER --admin_password=$WPPASS --admin_email=$WPMAIL
 
 # Update Permissions
 sudo chown -R $USER:$USER $PATH

@@ -393,6 +393,7 @@ class SiteController extends Controller
 
         // return response()->json([]);
         return response()->json([
+            'user'              => $user->username,
             'domain'            => $site->domain.'/wp-admin/',
             'username'          => $wp['user'],
             'password'          => $wp['pass'],
