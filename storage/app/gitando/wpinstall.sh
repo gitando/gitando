@@ -42,7 +42,7 @@ while [ -n "$1" ] ; do
 done
 
 # Enter into the public directory
-cd $PATH
+cd /home/$USER/web/$PATH
 
 # Install WP
 wp --allow-root core download
