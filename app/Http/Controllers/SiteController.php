@@ -31,87 +31,7 @@ class SiteController extends Controller
     /**
      * List all sites
      *
-     * @OA\Get(
-     *      path="/api/sites",
-     *      summary="List all sites",
-     *      tags={"Sites"},
-     *      description="List all sites managed by panel.",
-     *      @OA\Parameter(
-     *          name="Authorization",
-     *          description="Use Apikey prefix (e.g. Authorization: Apikey XYZ)",
-     *          required=true,
-     *          in="header",
-     *          @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *          response=200,
-     *          description="Successful request",
-     *          @OA\JsonContent(
-     *              type="array",
-     *              @OA\Items(
-     *                @OA\Property(
-     *                    property="site_id",
-     *                    description="Site unique ID",
-     *                    type="string",
-     *                    example="abc-123-def-456"
-     *                ),
-     *                @OA\Property(
-     *                    property="domain",
-     *                    description="Main site domain",
-     *                    type="string",
-     *                    example="domain.ltd"
-     *                ),
-     *                @OA\Property(
-     *                    property="username",
-     *                    description="Site username",
-     *                    type="string",
-     *                    example="cp123456"
-     *                ),
-     *                @OA\Property(
-     *                    property="server_id",
-     *                    description="Related server unique ID",
-     *                    type="string",
-     *                    example="abc-123-def-456"
-     *                ),
-     *                @OA\Property(
-     *                    property="server_name",
-     *                    description="Related server name",
-     *                    type="string",
-     *                    example="Staging Server",
-     *                ),
-     *                @OA\Property(
-     *                    property="server_ip",
-     *                    description="Related server IP",
-     *                    type="string",
-     *                    example="123.123.123.123",
-     *                ),
-     *                @OA\Property(
-     *                    property="php",
-     *                    description="Site PHP version",
-     *                    type="string",
-     *                    example="7.4"
-     *                ),
-     *                @OA\Property(
-     *                    property="basepath",
-     *                    description="Site basepath",
-     *                    type="string",
-     *                    example="public"
-     *                ),
-     *                @OA\Property(
-     *                    property="aliases",
-     *                    description="The number of aliases of this site",
-     *                    type="integer",
-     *                    example="8"
-     *                ),
-     *              )
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized access error"
-     *      )
-     * )
-    */
+     */
     public function index()
     {
         $sites = Site::where('panel', false)->get();
@@ -469,7 +389,7 @@ class SiteController extends Controller
             'mail' => 'do@gitando.com'
         ];
         
-        WPSiteSSH::dispatch($site, $wp)->delay(Carbon::now()->addSeconds(9));
+        WPSiteSSH::dispatch($site, $wp)->delay(Carbon::now()->addSeconds(3));
 
         // return response()->json([]);
         return response()->json([

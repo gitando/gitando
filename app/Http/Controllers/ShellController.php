@@ -97,6 +97,18 @@ class ShellController extends Controller
                 ->withHeaders(['Content-Type' =>'application/x-sh']);
     }
 
+    /**
+     * WP installation script
+     *
+    */
+    public function wpinstall()
+    {
+        $script = Storage::get('gitando/wpinstall.sh');
+
+        return response($script)
+                ->withHeaders(['Content-Type' =>'application/x-sh']);
+    }
+
 
     /**
      * Client Patch - 202301171
