@@ -45,6 +45,7 @@ class GitandoUpdate extends Command
         $servers = Server::where('build', '<', '202311172')->get();
 
         foreach ($servers as $server) {
+            print_r( $server );
             echo 'patching' . PHP_EOL;
             $ssh = new SSH2($server->ip, 22);
             $ssh->login('gitando', $server->password);
@@ -55,14 +56,14 @@ class GitandoUpdate extends Command
             $ssh->exec('echo '.$server->password.' | sudo -S sudo unlink 202311171');
             $ssh->exec('exit');
             echo 'Done paching' .PHP_EOL;
-            $server->build = '202311171';
+            $server->build = '202311172';
             $server->save();
         }
 
         $ssh = new SSH2($server->ip, 22);
         $ssh->login('gitando', $server->password);
         $ssh->setTimeout(360);
-        $ssh->exec('echo '.$server->password.' | sudo -S sudo bash /var/www/html/storage/app/gitando/self-update.sh');
+        $ssh->exec('echo '.$server->password.' | sudo -S sudo sh /var/www/html/storage/app/gitando/self-update.sh');
         $ssh->exec('exit');
 
         // 2021-12-18 patch
