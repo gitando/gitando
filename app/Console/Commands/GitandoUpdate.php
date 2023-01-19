@@ -62,7 +62,7 @@ class GitandoUpdate extends Command
         $ssh = new SSH2($server->ip, 22);
         $ssh->login('gitando', $server->password);
         $ssh->setTimeout(360);
-        $ssh->exec('echo '.$server->password.' | sudo -S sudo bash /var/www/html/utility/gitando-update/run.sh');
+        $ssh->exec('echo '.$server->password.' | sudo -S sudo bash /var/www/html/storage/app/gitando/self-update.sh');
         $ssh->exec('exit');
 
         // 2021-12-18 patch

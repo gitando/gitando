@@ -27,10 +27,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('servers:setupcheck')->everyMinute();
-        $schedule->command('gitando:update')->dailyAt('12:05');
-        $schedule->command('gitando:logrotate')->dailyAt('00:00');
-        $schedule->command('gitando:activesetupcount')->dailyAt('03:03');
+        $tasklog = '/var/www/html/storage/task.log';
+
+        $schedule->command('servers:setupcheck')->everyMinute()->sendOutputTo($tasklog);
+        $schedule->command('gitando:update')->dailyAt('12:05')->sendOutputTo($tasklog);
+        $schedule->command('gitando:logrotate')->dailyAt('00:00')->sendOutputTo($tasklog);
+        $schedule->command('gitando:activesetupcount')->dailyAt('03:03')->sendOutputTo($tasklog);
     }
 
     /**

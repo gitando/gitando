@@ -381,6 +381,12 @@ class SiteController extends Controller
             ], 404);
         }
 
+        /**
+         * @TODO: Check if WP ins already installed and running
+         */
+        //(Symfony\Component\Process\Process::fromShellCommandline('wp option pluck _site_transient_update_core updates 0 current --allow-root'))->run(function ($type, $buffer) { echo $buffer; });
+
+
         //$pdftoken = JWT::encode(['iat' => time(),'exp' => time() + 180], config('gitando.jwt_secret').'-Pdf');
 
         $wp = [

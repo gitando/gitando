@@ -186,7 +186,6 @@ return [
     'wp_install' => 'Install WordPress',
     'password_resets' => 'Passwords Reset',
     'application_installer' => 'Application Installer',
-    'coming_soon' => 'Coming soon...',
     'github_repository' => 'Github Repository',
     'github_repository_setup' => 'Set up a Github Repository',
     'github_repository_config' => 'Repo Configuration',

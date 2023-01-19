@@ -510,7 +510,6 @@ FLUSH PRIVILEGES;
 EOF
 
 
-
 # REDIS
 clear
 echo "${bggreen}${black}${bold}"
@@ -523,7 +522,6 @@ sudo rpl -i -w "supervised no" "supervised systemd" /etc/redis/redis.conf
 sudo systemctl restart redis.service
 
 
-
 # LET'S ENCRYPT
 clear
 echo "${bggreen}${black}${bold}"
@@ -533,7 +531,6 @@ sleep 1s
 
 sudo apt-get install -y certbot
 sudo apt-get install -y python3-certbot-nginx
-
 
 
 # NODE
@@ -571,7 +568,9 @@ sleep 1s
 CREATE DATABASE IF NOT EXISTS gitando;
 EOF
 clear
+
 sudo rm -rf /var/www/html
+
 cd /var/www && git clone https://github.com/$REPO.git html
 cd /var/www/html && git pull
 cd /var/www/html && git checkout $BRANCH
@@ -579,6 +578,7 @@ cd /var/www/html && git pull
 cd /var/www/html && sudo unlink .env
 cd /var/www/html && sudo cp .env.example .env
 cd /var/www/html && php artisan key:generate
+
 sudo rpl -i -w "DB_USERNAME=dbuser" "DB_USERNAME=gitando" /var/www/html/.env
 sudo rpl -i -w "DB_PASSWORD=dbpass" "DB_PASSWORD=$DBPASS" /var/www/html/.env
 sudo rpl -i -w "DB_DATABASE=dbname" "DB_DATABASE=gitando" /var/www/html/.env
@@ -588,39 +588,48 @@ sudo rpl -i -w "GITANDOSERVERID" $SERVERID /var/www/html/database/seeders/Databa
 sudo rpl -i -w "GITANDOIP" $IP /var/www/html/database/seeders/DatabaseSeeder.php
 sudo rpl -i -w "GITANDOPASS" $PASS /var/www/html/database/seeders/DatabaseSeeder.php
 sudo rpl -i -w "GITANDODB" $DBPASS /var/www/html/database/seeders/DatabaseSeeder.php
+
 sudo chmod -R o+w /var/www/html/storage
 sudo chmod -R 777 /var/www/html/storage
 sudo chmod -R o+w /var/www/html/bootstrap/cache
 sudo chmod -R 777 /var/www/html/bootstrap/cache
+
 cd /var/www/html && composer update --no-interaction
 cd /var/www/html && php artisan key:generate
 cd /var/www/html && php artisan cache:clear
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan gitando:activesetupcount
+
+# Default Pages
 GITANDOBULD=/var/www/html/public/build_$SERVERID.php
 sudo touch $GITANDOBULD
 sudo cat > $GITANDOBULD <<EOF
 $BUILD
 EOF
+
 GITANDOPING=/var/www/html/public/ping_$SERVERID.php
 sudo touch $GITANDOPING
 sudo cat > $GITANDOPING <<EOF
 Up
 EOF
+
 PUBKEYGH=/var/www/html/public/ghkey_$SERVERID.php
 sudo touch $PUBKEYGH
 sudo cat > $PUBKEYGH <<EOF
 <?php
 echo exec("cat /etc/gitando/github.pub");
 EOF
+
 cd /var/www/html && php artisan migrate --seed --force
 cd /var/www/html && php artisan config:cache
+
 sudo chmod -R o+w /var/www/html/storage
 sudo chmod -R 775 /var/www/html/storage
 sudo chmod -R o+w /var/www/html/bootstrap/cache
 sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:gitando /var/www/html
+sudo chmod -R 750 /var/www/html
 
 
 # LAST STEPS
@@ -630,32 +639,43 @@ echo "Last steps..."
 echo "${reset}"
 sleep 1s
 
-sudo chown www-data:gitando -R /var/www/html
-sudo chmod -R 750 /var/www/html
+
+# System startup
 sudo echo 'DefaultStartLimitIntervalSec=1s' >> /usr/lib/systemd/system/user@.service
 sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
 sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
 sudo systemctl daemon-reload
 
+# Cron setup
 TASK=/etc/cron.d/gitando.crontab
 touch $TASK
 cat > "$TASK" <<EOF
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
 10 4 * * 7 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
 20 4 * * 7 apt-get -y update
 40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
 20 5 * * 7 apt-get clean && apt-get autoclean
 50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 * * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
-5 2 * * * sh /var/www/html/utility/gitando-update/run.sh >> /dev/null 2>&1
+5 2 * * * sh /var/www/html/storage/app/gitando/self-update.sh >> /dev/null 2>&1
 EOF
 crontab $TASK
 sudo systemctl restart nginx.service
+
 
 sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
 sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
 sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
 sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
 sudo service sshd restart
+
 
 TASK=/etc/supervisor/conf.d/gitando.conf
 touch $TASK

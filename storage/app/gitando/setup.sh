@@ -503,7 +503,6 @@ FLUSH PRIVILEGES;
 EOF
 
 
-
 # REDIS
 clear
 echo "${bggreen}${black}${bold}"
@@ -516,7 +515,6 @@ sudo rpl -i -w "supervised no" "supervised systemd" /etc/redis/redis.conf
 sudo systemctl restart redis.service
 
 
-
 # LET'S ENCRYPT
 clear
 echo "${bggreen}${black}${bold}"
@@ -526,7 +524,6 @@ sleep 1s
 
 sudo apt-get install -y certbot
 sudo apt-get install -y python3-certbot-nginx
-
 
 
 # NODE
@@ -549,7 +546,35 @@ sudo apt-get update
 sudo apt -y install nodejs
 sudo apt -y install npm
 
+# are these needed? #
+ARTISAN=/var/www/html/artisan
+sudo touch $ARTISAN
+UPDATE=/var/www/html/storage/app/gitando/self-update.sh
+sudo touch $UPDATE
+# are these needed? #
 
+
+# Default Pages
+sudo mv /storage/app/gitand/welcome.php /var/www/html/index.php
+
+GITANDOBULD=/var/www/html/build_$SERVERID.php
+sudo touch $GITANDOBULD
+sudo cat > "$GITANDOBULD" <<EOF
+$BUILD
+EOF
+
+GITANDOPING=/var/www/html/ping_$SERVERID.php
+sudo touch $GITANDOPING
+sudo cat > "$GITANDOPING" <<EOF
+Up
+EOF
+
+PUBKEYGH=/var/www/html/ghkey_$SERVERID.php
+sudo touch $PUBKEYGH
+sudo cat > "$PUBKEYGH" <<EOF
+<?php
+echo exec("cat /etc/gitando/github.pub");
+EOF
 
 
 # LAST STEPS
@@ -559,21 +584,32 @@ echo "Last steps..."
 echo "${reset}"
 sleep 1s
 
-sudo chown www-data:gitando -R /var/www/html
-sudo chmod -R 750 /var/www/html
+# System startup  
+sudo echo 'DefaultStartLimitIntervalSec=1s' >> /usr/lib/systemd/system/user@.service
+sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
 sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
 sudo systemctl daemon-reload
 
+
+# Cron setup
 TASK=/etc/cron.d/gitando.crontab
 touch $TASK
 cat > "$TASK" <<EOF
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
 10 4 * * 7 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
 20 4 * * 7 apt-get -y update
 40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
 20 5 * * 7 apt-get clean && apt-get autoclean
 50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 * * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
-5 2 * * * sh /var/www/html/utility/gitando-update/run.sh >> /dev/null 2>&1
+5 2 * * * sh /var/www/html/storage/app/gitando/self-update.sh >> /dev/null 2>&1
 EOF
 crontab $TASK
 sudo systemctl restart nginx.service
@@ -582,29 +618,6 @@ sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd
 sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
 sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
 sudo service sshd restart
-wget -P /var/www/html/ - https://raw.githubusercontent.com/$REPO/latest/utility/zero-page/index.php
-GITANDOBULD=/var/www/html/build_$SERVERID.php
-sudo touch $GITANDOBULD
-sudo cat > "$GITANDOBULD" <<EOF
-$BUILD
-EOF
-GITANDOPING=/var/www/html/ping_$SERVERID.php
-sudo touch $GITANDOPING
-sudo cat > "$GITANDOPING" <<EOF
-Up
-EOF
-ARTISAN=/var/www/html/artisan
-sudo touch $ARTISAN
-UPDATE=/var/www/html/utility/gitando-update/run.sh
-sudo touch $UPDATE
-PUBKEYGH=/var/www/html/ghkey_$SERVERID.php
-sudo touch $PUBKEYGH
-sudo cat > "$PUBKEYGH" <<EOF
-<?php
-echo exec("cat /etc/gitando/github.pub");
-EOF
-
-
 
 
 
@@ -614,7 +627,6 @@ echo "${bggreen}${black}${bold}"
 echo "Gitando installation has been completed..."
 echo "${reset}"
 sleep 1s
-
 
 
 
