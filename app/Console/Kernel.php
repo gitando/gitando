@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $tasklog = '/var/www/html/storage/task.log';
+        $tasklog = '/var/www/html/storage/logs/task.log';
 
         $schedule->command('servers:setupcheck')->everyMinute()->sendOutputTo($tasklog);
         $schedule->command('gitando:update')->dailyAt('12:05')->sendOutputTo($tasklog);
