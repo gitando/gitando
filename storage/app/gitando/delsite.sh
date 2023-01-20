@@ -31,9 +31,10 @@ sudo service php$PHP-fpm restart
 sudo userdel -r $USER_NAME
 sudo rm -rf /home/$USER_NAME
 
+# Drop user first, then database, otherwise user won't get deleted
 /usr/bin/mysql -u gitando -p$DBROOT <<EOF
-DROP DATABASE $USER_NAME;
 DROP USER '$USER_NAME'@'localhost';
+DROP DATABASE $USER_NAME;
 EOF
 
 sudo unlink /etc/nginx/sites-enabled/$USER_NAME.conf
