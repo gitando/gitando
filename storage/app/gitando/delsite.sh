@@ -31,7 +31,7 @@ sudo service php$PHP-fpm restart
 sudo userdel -r $USER_NAME
 sudo rm -rf /home/$USER_NAME
 
-/usr/bin/mysql -u root -p$DBROOT <<EOF
+/usr/bin/mysql -u gitando -p$DBROOT <<EOF
 DROP DATABASE $USER_NAME;
 DROP USER '$USER_NAME'@'localhost';
 EOF

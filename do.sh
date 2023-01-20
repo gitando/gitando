@@ -601,6 +601,7 @@ cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan gitando:activesetupcount
 
+
 # Default Pages
 GITANDOBULD=/var/www/html/public/build_$SERVERID.php
 sudo touch $GITANDOBULD
