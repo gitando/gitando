@@ -45,7 +45,7 @@ while [ -n "$1" ] ; do
     shift
 done
 
-sudo useradd -m -s $USER_SHELL -d /home/$USER_NAME -G gitando,$USER_NAME
+sudo useradd -m -s $USER_SHELL -d /home/$USER_NAME -G gitando $USER_NAME
 echo "$USER_NAME:$PASSWORD"|chpasswd
 
 # Seciry measure, just in case (default behavour)
@@ -80,7 +80,7 @@ sudo wget $REMOTE/conf/nginx -O $CUSTOM
 sudo dos2unix $CUSTOM
 sudo ln -s $NGINX /etc/nginx/sites-enabled/$USER_NAME.conf
 
-# redundant
+#redundant
 # sudo chown -R www-data: /home/$USER_NAME/web 
 
 sudo service php$PHP-fpm restart

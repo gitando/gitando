@@ -79,7 +79,6 @@
                 <div class="links">
                     <a target="_blank" href="{{ config('gitando.website') }}">Website</a>
                     <a target="_blank" href="{{ config('gitando.documentation') }}">Documentation</a>
-                    <a target="_blank" href="{{ config('gitando.app') }}">Mobile App</a>
                 </div>
             </div>
         </div>
