@@ -7,7 +7,7 @@ BUILD=202301171
 PASS=???
 DBPASS=???
 SERVERID=???
-REPO=andreapollastri/gitando
+REPO=gitando/gitando
 
 
 ####################################################   CLI TOOLS   ###

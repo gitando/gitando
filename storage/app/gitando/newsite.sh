@@ -45,10 +45,10 @@ while [ -n "$1" ] ; do
     shift
 done
 
-sudo useradd -m -s $USER_SHELL -d /home/$USER_NAME -G gitando $USER_NAME
+sudo useradd -m -s $USER_SHELL -d /home/$USER_NAME -G gitando,$USER_NAME
 echo "$USER_NAME:$PASSWORD"|chpasswd
 
-# Seciry measure - just in case (default behavour)
+# Seciry measure, just in case (default behavour)
 sudo chmod o-r /home/$USER_NAME
 
 # Fixes "permission denied"
@@ -66,7 +66,7 @@ else
 fi
 sudo touch $WELCOME
 sudo cat > "$WELCOME" <<EOF
-<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"> <title>Coming Soon</title> <style>html{font-family: Arial, sans-serif; color: #000;}main{margin: 6rem 0 0; text-align: center;}h1{font-size: clamp(1em, 9vw, 3em); margin-bottom: 0;}h2{font-size: clamp(1em, 12vw, 6em);}p{margin-top: 8px; color: #7d7d7d; font-size: clamp(0.7em, 5vw, 1.2em);;}a{color: #7d7d7d;}</style> </head> <body> <main> <h1> <script>document.write(window.location.hostname); </script> </h1> <p> Managed with <a href="https://gitando.com/">Gitando</a> </p><h2>COMING SOON</h2> </main> </body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Coming Soon</title><style>html{font-family: Arial, sans-serif; color: #000;}main{margin: 6rem 0 0; text-align: center;}h1{font-size: clamp(1em, 9vw, 3em); margin-bottom: 0;}h2{font-size: clamp(1em, 12vw, 6em);}p{margin-top: 8px; color: #7d7d7d; font-size: clamp(0.7em, 5vw, 1.2em);;}a{color: #7d7d7d;}</style></head><body><main><h1><script>document.write(window.location.hostname); </script></h1><p> Managed with <a href="https://gitando.com/">Gitando</a></p><h2>COMING SOON</h2></main></body></html>
 EOF
 
 NGINX=/etc/nginx/sites-available/$USER_NAME.conf
@@ -80,9 +80,8 @@ sudo wget $REMOTE/conf/nginx -O $CUSTOM
 sudo dos2unix $CUSTOM
 sudo ln -s $NGINX /etc/nginx/sites-enabled/$USER_NAME.conf
 
-# dublicaed
-#sudo chown -R www-data: /home/$USER_NAME/web
-sudo chown -R $USER_NAME:gitando /home/$USER_NAME/web
+# redundant
+# sudo chown -R www-data: /home/$USER_NAME/web 
 
 sudo service php$PHP-fpm restart
 sudo systemctl restart nginx.service
@@ -101,5 +100,6 @@ sudo mkdir /home/$USER_NAME/.cache
 sudo mkdir /home/$USER_NAME/git
 sudo cp /etc/gitando/github /home/$USER_NAME/git/deploy
 
-sudo chown -R $USER_NAME:gitando /home/$USER_NAME/.cache
-sudo chown -R $USER_NAME:gitando /home/$USER_NAME/git
+sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/.cache
+sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/git
+sudo chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/web

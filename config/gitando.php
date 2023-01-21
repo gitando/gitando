@@ -12,9 +12,8 @@
         'jwt_refresh'       => env('JWT_REFRESH', 7200),
 
         // Custom Vars
-        'name'              => env('GITANDO_NAME', 'Gitando Panel'),
+        'name'              => env('GITANDO_NAME', 'Gitando'),
         'website'           => env('GITANDO_WEBSITE', 'https://gitando.com'),
-        'activesetupcount'  => env('GITANDO_ACTIVESETUPCOUNT', 'https://service.gitando.com/setupcount'),
         'documentation'     => env('GITANDO_DOCUMENTATION', 'https://gitando.com/docs.html'),
         'app'               => env('GITANDO_APP', 'https://play.google.com/store/apps/details?id=it.christiangiupponi.gitando'),
 

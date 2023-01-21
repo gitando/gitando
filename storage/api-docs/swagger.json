@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Gitando API Documentation",
-        "description": "API Documentation for Gitando Panel",
+        "description": "API Documentation for Gitando",
         "version": "1.0"
     },
     "paths": {
@@ -1341,7 +1341,7 @@
                                         "repository": {
                                             "description": "Github repository",
                                             "type": "string",
-                                            "example": "andreapollastri/gitando"
+                                            "example": "gitando/gitando"
                                         },
                                         "branch": {
                                             "description": "Git branch",
@@ -1482,7 +1482,7 @@
                                     "repository": {
                                         "description": "Github repository",
                                         "type": "string",
-                                        "example": "andreapollastri/gitando"
+                                        "example": "gitando/gitando"
                                     },
                                     "branch": {
                                         "description": "Git branch",
@@ -1564,7 +1564,7 @@
                                         "repository": {
                                             "description": "Github repository",
                                             "type": "string",
-                                            "example": "andreapollastri/gitando"
+                                            "example": "gitando/gitando"
                                         },
                                         "branch": {
                                             "description": "Git branch",
