@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\ActiveSetupCount::class,
         \App\Console\Commands\LogRotate::class,
         \App\Console\Commands\ServerSetupCheck::class,
         \App\Console\Commands\GitandoUpdate::class,
@@ -32,7 +31,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('servers:setupcheck')->everyMinute()->sendOutputTo($tasklog);
         $schedule->command('gitando:update')->dailyAt('12:05')->sendOutputTo($tasklog);
         $schedule->command('gitando:logrotate')->dailyAt('00:00')->sendOutputTo($tasklog);
-        $schedule->command('gitando:activesetupcount')->dailyAt('03:03')->sendOutputTo($tasklog);
     }
 
     /**
